@@ -1,0 +1,79 @@
+{% extends 'sensor/index.html' %}
+{% block title %}Current limit{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div id="wrapper">
+  <!-- Sidebar -->
+  {% include 'sensor/layout/navbar.html' %}
+  <!-- End of Sidebar -->
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <div class="container-fluid">
+        {% comment %} <div class="container-fluid h-100 pt-4 white"> {% endcomment %}
+          <!-- Content Row -->
+          <div class="card-body d-blue rounded card-cus mt-4">
+            <h4 class="pb-4 text-black">Current limit <span style="cursor: pointer; float: right; font-size: 1.5em"></span>
+            </h4>
+        
+            <form class="form-horizontal" method="POST" action="/submitlimit">
+              {% csrf_token %}   
+              <div class="form-group">
+                <h4 class=" text-black">
+                  <div class=" mt-4 text-black" style="font-size: 15px;">Select Elevator</div>
+                  <span style="cursor: pointer; float: right; font-size: 1.5em;"></span>
+              </h4>
+              <select class="form-control" required name="elevator_id" id="elevator_id" style="box-sizing:inherit;">
+                  <option><div class=" mt-4 text-black" style="font-size: 15px;" data-tag='Select'></div>
+                  </option>
+                  {% for e in elevator %}
+                  <!-- {{k.product_no}} -->
+                  <option value="{{ e.elevator_id }}" >Elevator {{ e.name }}</option>
+                  {% endfor %}
+              </select>
+
+                <div class=" mt-4 text-black" style="font-size: 15px;">
+                  <label class="control-label col-sm-2" for="name">Curent Limit:</label>
+                    <input
+                      type="varchar"
+                      class="form-control"
+                      name="climit"
+                      id="climit"
+                      placeholder="Enter current limit"
+                    />
+                </div>
+              </div>
+
+              <!-- Submit Button-->
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" id="submit">Submit</button>
+                </div>
+              </div>
+            </form>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th scope="col">Elevator</th>
+                  <th scope="col">Current limit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for e in elevator %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ e.climit }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
